@@ -1,9 +1,9 @@
 import os
-import pytest
 
+import pytest
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.webdriver.safari.options import Options as SafariOptions
 
@@ -11,9 +11,15 @@ from selenium.webdriver.safari.options import Options as SafariOptions
 def pytest_addoption(parser):
     parser.addoption('--browser', default='chrome', choices=['chrome', 'firefox', 'safari'])
     parser.addoption('--headless', action='store_true')
+    parser.addoption('--base_url', required=True)
 
 
-@pytest.fixture
+@pytest.fixture()
+def base_url(request):
+    return request.config.getoption('--base_url')
+
+
+@pytest.fixture()
 def browser(request):
     browser_name = request.config.getoption('--browser')
     headless = request.config.getoption('--headless')
